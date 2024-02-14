@@ -1,0 +1,126 @@
+
+1. Identify resources
+
+Recipies
+Lists
+
+2. Model URIs
+
+/recipies
+/recipies/{id}
+
+/lists
+/lists/{id}
+
+/lists/{id}
+/lists/{id}
+
+3. Resource representations
+
+{
+    "ammount": "278",
+    "size": "20",
+    "page": "3",
+    "next": "/recipies?index=4&size=20",
+    "self":"/recipies",
+    "recipies": [
+        {
+            "self": "/recipies/1",
+            "name": "Korv med mos",
+            "tillagningssteg": [
+                "Koka korv",
+                "Koka mos",
+                "Lägg på ketchup",
+                "Häll på rostad lök"
+            ]
+        }
+        {
+            "self": "/recipies/2",
+            "name": "Korv med mos",
+            "tillagningssteg": [
+                "Koka korv",
+                "Koka mos",
+                "Lägg på ketchup",
+                "Häll på rostad lök"
+            ]
+        }
+    ]
+}
+
+
+// ETT RECEPT 
+
+{
+    "self": "/recipies/1",
+    "name": "Korv med mos",
+    "tillagningssteg": [
+        "Koka korv",
+        "Koka mos",
+        "Lägg på ketchup",
+        "Häll på rostad lök"
+    ]
+}
+
+
+// Listor
+
+{
+    "amount": "4",
+    "self": "/lists",
+    "lists": [
+        {
+            "self": "/lists/1",
+            "name": "Korvmojen"
+        }
+    ]
+}
+
+{
+    "self": "/lists/1",
+    "name": "Korvmojen",
+    "recipies": [
+        {
+            "mycomment": "Det här är bra grejer",
+            "ref": "/recipies/1"
+        }
+    ]
+}
+
+//EXEMPEL  på /lists/{id}/recipies
+
+{
+    "self": "/lists/1",
+    "name": "Korvmojen",
+    "meta": {
+        ...
+    },
+    "recipiesref": "/lists/1/recipies"
+}
+
+
+4. Assign HTTP methods
+
+HTTP GET /recipies
+HTTP GET /lists
+
+HTTP GET /recipies?index=0&size=20
+HTTP GET /recipies?filter="vegan"
+
+HTTP GET /recipies/{id}
+HTTP GET /lists/{id}
+
+HTTP POST /recipies
+HTTP POST /lists
+
+HTTP PUT /recipies/{id}
+HTTP PUT /lists/{id}
+
+HTTP DELETE /recipies/{id}
+HTTP DELETE /lists/{id}
+
+
+//SKIPPAR
+// HTTP POST /lists/{id}
+// HTTP PUT /lists
+// HTTP DELETE /lists
+
