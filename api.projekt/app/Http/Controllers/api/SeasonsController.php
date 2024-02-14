@@ -48,7 +48,14 @@ class SeasonsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        if(Season::where('id', $id)->exists()){
+            $season = Season::where('id', $id)->get()->toJson(JSON_PRETTY_PRINT);
+            return response($season, 200);
+        } else {
+            return response()->json([
+                'message' => 'Season not found'
+            ], 404);
+        }
     }
 
     /**
@@ -56,7 +63,34 @@ class SeasonsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate(
+            [
+                'name' => 'string',
+                'number_of_episodes' => 'string',
+                'series_id' => 'string'
+            ]
+        );
+
+        if(Season::where('id', $id)->exists()){
+
+            $season = Season::find($id);
+            $season->name = is_null($request->name) ? $season->name : $request->name;
+            $season->number_of_episodes = is_null($request->number_of_episodes) ? $season->number_of_episodes : $request->number_of_episodes;
+            $season->series_id = is_null($request->series_id) ? $season->series_id : $request->series_id;
+
+            if ($request->hasFile('poster')) {
+                $path = $request->file('poster')->store('images', 'public');
+                $season->poster = $path;
+            }
+
+            $season->save();
+
+            return response($season, 200);
+        } else {
+            return response()->json([
+                'message' => 'Season not found'
+            ], 404);
+        }
     }
 
     /**
@@ -64,6 +98,18 @@ class SeasonsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if(Season::where('id', $id)->exists()){
+
+            $season = Season::find($id);
+            $season->delete();
+
+            return response()->json([
+                'message' => 'Season deleted'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Season not found'
+            ], 404);
+        }
     }
 }
